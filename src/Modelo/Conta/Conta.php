@@ -2,9 +2,7 @@
 
 namespace Projeto\Iface\Modelo\Conta; // Projeto\Iface é o "src" do namespace
 
-use Projeto\Iface\Modelo\Autenticavel;
-
-class Conta implements Autenticavel
+class Conta
 {
 // -----------------Atributos e construtor-----------------
     private $login;
@@ -34,10 +32,15 @@ class Conta implements Autenticavel
     {
         return $this->nomeUsuario;
     }
+
+    public function setNomeUsuario(string $novoNome): void
+    {
+        $this->nomeUsuario = $novoNome;
+    }
 // --------------------------------------------------------
 
-    public function podeAutenticar(string $login, string $senha): bool
-    {
-        return $login === $this->login && $senha === $this->senha;
-    }
+public function podeAutenticar(string $login, string $senha): bool
+{
+    return $login === $this->login && $senha === $this->senha;
+}
 }
