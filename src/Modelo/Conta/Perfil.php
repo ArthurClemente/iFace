@@ -22,7 +22,7 @@ class Perfil
     public function alteraNomeUsuario(Conta $conta, string $novoNome): void
     {
         if ($conta->getNomeUsuario() === $novoNome){
-            echo "O nome de usuário informado é igual ao já cadastrado.";
+            echo "O nome de usuário informado é igual ao já cadastrado." . PHP_EOL;
         }
 
         $conta->setNomeUsuario($novoNome);
