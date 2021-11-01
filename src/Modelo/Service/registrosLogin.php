@@ -2,7 +2,7 @@
 
 namespace Projeto\Iface\Modelo\Service;
 
-class registrosLogin
+class RegistrosLogin
 {
     private static $registroEmail = array();
     private static $registroNomeUsuario = array();
