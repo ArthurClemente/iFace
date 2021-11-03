@@ -51,14 +51,9 @@ class Conta
         return $login === $this->login && $senha === $this->senha;
     }
 
-    public function verificarRegistroEmails(): array // Retorna o array contendo todos os emails registrados de cada instância de Conta.
+    public function recuperaRegistroContas(): array // Função que recupera o bidimensional que contêm os emails e nomes de usuário cadastrados.
     {
-        return $this->registro->getRegistroEmails();   
-    }
-
-    public function verificarRegistroNomes(): array // Retorna o array contendo todos os nomes de usuário registrados de cada instância de Conta.
-    {
-        return $this->registro->getRegistroNomes();
+        return $this->registro->getRegistroContas();
     }
 // --------------------------------------------------------
 }
