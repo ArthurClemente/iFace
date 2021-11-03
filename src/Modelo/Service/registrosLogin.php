@@ -4,22 +4,23 @@ namespace Projeto\Iface\Modelo\Service;
 
 class RegistrosLogin
 {
-    private static $registroEmail = array();
-    private static $registroNomeUsuario = array();
+    private static $registroContas = array();
+    private static $numeroDeContas;
 
     public function __construct(string $email, string $nomeUsuario)
     {
-        self::$registroEmail[] = $email;
-        self::$registroNomeUsuario[] = $nomeUsuario;
+        self::$numeroDeContas += 1;
+        $this->incrementaArray($email, $nomeUsuario);
     }
 
-    public function getRegistroEmails(): array
+    public function incrementaArray(string $email, string $nomeUsuario): void
     {
-        return self::$registroEmail;
+        $listaContas = array($email, $nomeUsuario);
+        array_push(self::$registroContas, $listaContas);
     }
 
-    public function getRegistroNomes(): array
+    public function getRegistroContas(): array
     {
-        return self::$registroNomeUsuario;
+        return self::$registroContas;
     }
 }
