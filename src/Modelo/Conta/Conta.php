@@ -9,24 +9,24 @@ use Projeto\Iface\Modelo\Service\RegistrosLogin;
 class Conta
 {
     // -----------------Atributos e construtor-----------------
-    private $login;
+    private $email;
     private $senha;
     private $nomeUsuario;
     private $registro;
 
-    public function __construct(string $login, string $senha, string $nomeUsuario)
+    public function __construct(string $email, string $senha, string $nomeUsuario)
     {
-        $this->login = $login;
+        $this->email = $email;
         $this->senha = $senha;
         $this->nomeUsuario = $nomeUsuario;
-        $this->registro = new RegistrosLogin($login, $nomeUsuario);
+        $this->registro = new RegistrosLogin($email, $senha, $nomeUsuario);
     }
 // --------------------------------------------------------
 
 // -----------------Getters dos atributos------------------
-    public function getLogin(): string
+    public function getEmail(): string
     {
-        return $this->login;
+        return $this->email;
     }
 
     public function getSenha(): string
@@ -46,10 +46,6 @@ class Conta
 // --------------------------------------------------------
 
 // --------------------Funcionalidades---------------------
-    public function podeAutenticar(string $login, string $senha): bool // Função que passa para o teste de login da classe Perfil se o email e a senha informados estão corretos.
-    {
-        return $login === $this->login && $senha === $this->senha;
-    }
 
     public function recuperaRegistroContas(): array // Função que recupera o bidimensional que contêm os emails e nomes de usuário cadastrados.
     {
