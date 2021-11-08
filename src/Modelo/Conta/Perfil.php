@@ -4,6 +4,7 @@ namespace Projeto\Iface\Modelo\Conta;
 
 require_once 'src/Modelo/Autoloader/autoload.php';
 
+use Projeto\Iface\Modelo\Comunidade;
 use Projeto\Iface\Modelo\Conta\Conta;
 
 class Perfil
@@ -24,14 +25,14 @@ class Perfil
     //-------------------Funções de criação/alteração de atributos do perfil-----------------------
     public function alteraDados(): void
     {
-        echo "[ 1 ] Alterar nome\n[ 2 ] Adicionar endereço\n[ 3 ] Atualizar endereço\n[ 0 ] Cancelar\nEscolha uma opção: ";
-        $escolha = rtrim(fgets(STDIN)); // Captura o input do terminal.
-        $this->tratarEscolha($escolha);
+        echo "[ 1 ] Alterar nome\n[ 2 ] Adicionar endereço\n[ 3 ] Atualizar endereço\n[ 4 ] Criar Comunidade\n[ 0 ] Cancelar\nEscolha uma opção: ";
+        $escolhaPerfil = rtrim(fgets(STDIN)); // Captura o input do terminal.
+        $this->tratarEscolha($escolhaPerfil);
     }
 
-    public function tratarEscolha($escolha)
+    public function tratarEscolha($escolhaPerfil)
     {
-        if ($escolha === "1") {
+        if ($escolhaPerfil === "1") {
             echo "Novo nome de usuário: ";
             $novoNome = rtrim(fgets(STDIN));
             if ($this->nomeUsuario === $novoNome) {
@@ -41,7 +42,7 @@ class Perfil
             $this->nomeUsuario = $novoNome;
         }
 
-        else if ($escolha === "2") {
+        else if ($escolhaPerfil === "2") {
             echo "Cidade: ";
             $nomeCidade = rtrim(fgets(STDIN));
             echo "Bairro: ";
@@ -51,11 +52,18 @@ class Perfil
             echo "Número: ";
             $numeroCasa = rtrim(fgets(STDIN));
             array_push($this->endereco, $nomeCidade, $nomeBairro, $nomeRua, $numeroCasa);
-
-            var_dump($this->endereco);
         }
 
-        else if ($escolha === "0")
+        else if ($escolhaPerfil === "4")
+        {
+            echo "Nome da comunidade: ";
+            $novoNomeComunidade = rtrim(fgets(STDIN));
+            echo "Descrição da Comunidade: ";
+            $novaDescricao = rtrim(fgets(STDIN));
+            new Comunidade($novoNomeComunidade, $novaDescricao);
+        }
+
+        else if ($escolhaPerfil === "0")
         {
             echo "Saindo do sistema...";
             exit();
@@ -63,7 +71,7 @@ class Perfil
         
         else 
         {
-            echo PHP_EOL . "Opção inválida, por favor escolha uma das opções disponíveis." . PHP_EOL;
+            echo PHP_EOL . "Opção inválida, por favor escolhaPerfil uma das opções disponíveis." . PHP_EOL;
             $this->alteraDados();
         }
     }
