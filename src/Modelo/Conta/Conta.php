@@ -2,9 +2,9 @@
 
 namespace Projeto\Iface\Modelo\Conta; // Projeto\Iface é o "src" do namespace
 
-require_once 'src/Modelo/Autoloader/autoload.php';
+use Projeto\Iface\Modelo\Service\ListaRegistros;
 
-use Projeto\Iface\Modelo\Service\RegistrosLogin;
+require_once 'src/Modelo/Autoloader/autoload.php';
 
 class Conta
 {
@@ -12,14 +12,15 @@ class Conta
     private $email;
     private $senha;
     private $nomeUsuario;
-    private $registro;
+    private $registroConta;
 
     public function __construct(string $email, string $senha, string $nomeUsuario)
     {
         $this->email = $email;
         $this->senha = $senha;
         $this->nomeUsuario = $nomeUsuario;
-        $this->registro = new RegistrosLogin($email, $senha, $nomeUsuario);
+        $this->registroConta = new ListaRegistros();
+        $this->adicionaDadosConta($email, $senha, $nomeUsuario);
     }
 // --------------------------------------------------------
 
@@ -47,9 +48,15 @@ class Conta
 
 // --------------------Funcionalidades---------------------
 
+    public function adicionaDadosConta(string $email, string $senha, string $nomeUsuario): void
+    {
+        $this->registroConta->incrementaArrayContas($email, $senha, $nomeUsuario);
+    }
+    
     public function recuperaRegistroContas(): array // Função que recupera o bidimensional que contêm os emails e nomes de usuário cadastrados.
     {
-        return $this->registro->getRegistroContas();
+        return $this->registroConta->getRegistroContas();
     }
+
 // --------------------------------------------------------
 }
