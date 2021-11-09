@@ -5,7 +5,7 @@ namespace Projeto\Iface\Modelo;
 require_once "src/Modelo/Autoloader/autoload.php";
 
 use Projeto\Iface\Modelo\Conta\Conta;
-use Projeto\Iface\Modelo\Service\RegistrosLogin;
+use Projeto\Iface\Modelo\Service\ListaRegistros;
 
 class Menu
 {
@@ -22,20 +22,16 @@ class Menu
         $this->tratarEscolha($escolha);
     }
 
-    // Função que verifica se o login e a senha são iguais aos parâmetros utilizados no construtor da classe Conta.
-    protected function tentaLogin(string $email, string $senha): void
-    {
-
-    }
-
     public function tratarEscolha(string $escolha)
     {
         if($escolha === "1") // Falta implementar o método de tentar login
         {
             echo "Email: ";
-            $this->email = rtrim(fgets(STDIN));
+            $emailLogin = rtrim(fgets(STDIN));
             echo "Senha: ";
-            $this->senha = rtrim(fgets(STDIN));
+            $senhaLogin = rtrim(fgets(STDIN));
+            $this->tentaLogin($emailLogin, $senhaLogin);
+            $this->mostrarOpcoes();
         }
         
         else if($escolha === "2")
@@ -47,6 +43,7 @@ class Menu
             echo "Nome de usuário: ";
             $novoNomeDeUsuario = rtrim(fgets(STDIN));
             new Conta($novoEmail, $novaSenha, $novoNomeDeUsuario);
+            $this->mostrarOpcoes();
         }
 
         else if ($escolha === "0")
@@ -60,5 +57,20 @@ class Menu
             echo PHP_EOL . "Opção inválida, por favor escolha uma das três opções disponíveis." . PHP_EOL;
             $this->mostrarOpcoes();
         }
+    }
+
+    public function tentaLogin(string $email, string $senha): void
+    {
+        $registro = new ListaRegistros();
+        $registrosContas = $registro->getRegistroContas();
+        foreach($registrosContas as $indiceConta) {
+            for($dadosDaConta = 0; $dadosDaConta < 3; $dadosDaConta++) {
+                if($indiceConta[0] === $email && $indiceConta[1] === $senha)
+                {
+                    echo "Login bem sucedido!";
+                }
+            }
+        }
+        echo "Dados de login não encontrados ou incorretos!" . PHP_EOL;
     }
 }
