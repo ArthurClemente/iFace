@@ -2,27 +2,48 @@
 
 namespace Projeto\Iface\Modelo;
 
-use Projeto\Iface\Modelo\Service\ListaRegistros;
-
 require_once "src/Modelo/Autoloader/autoload.php";
 
 class Comunidade
 {
-    private $registroComunidade;
+    private $nomeComunidade;
+    private $descricaoComunidade;
+    private $membrosComunidade = array();
+    private $membroCriador;
 
-    public function __construct(string $nomeComunidade, string $descricaoComunidade)
+
+    public function __construct(string $nomeCriador, string $nomeComunidade, string $descricaoComunidade)
     {
-        $this->registroComunidade = new ListaRegistros();
-        $this->registroComunidade->incrementaArrayComunidades($nomeComunidade, $descricaoComunidade);
+        $this->nomeComunidade = $nomeComunidade;
+        $this->descricaoComunidade = $descricaoComunidade;
+        $this->membroCriador = $nomeCriador;
     }
 
-    public function adicionaDadosComunidade(string $nomeComunidade, string $descricaoComunidade): void
+    public function getNomeComunidade(): string
     {
-        $this->registroComunidade->incrementaArrayComunidades($nomeComunidade, $descricaoComunidade);
+        return $this->nomeComunidade;
     }
 
-    public function recuperaRegistroComunidades(): array
+    public function getDescricaoComunidade(): string
     {
-        return $this->registroComunidade->getRegistroComunidades();
+        return $this->descricaoComunidade;
+    }
+
+    public function getMembrosComunidade()
+    {
+        if(empty($this->membrosComunidade))
+        {
+            return "Essa comunidade não possui membros!";
+        }
+        
+        foreach($this->membrosComunidade as $membros)
+        {
+            return $membros;
+        }
+    }
+
+    public function getNomeCriador(): string
+    {
+        return $this->membroCriador;
     }
 }
