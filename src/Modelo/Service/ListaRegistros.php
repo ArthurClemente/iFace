@@ -2,6 +2,8 @@
 
 namespace Projeto\Iface\Modelo\Service;
 
+use Projeto\Iface\Modelo\Comunidade;
+
 class ListaRegistros
 {
     private static $registroContas = array();
@@ -13,10 +15,9 @@ class ListaRegistros
         array_push(self::$registroContas, $dadosConta);
     }
 
-    public function incrementaArrayComunidades(string $nomeComunidade, string $descricao): void
+    public function incrementaArrayComunidades(Comunidade $novaComunidade): void
     {
-        $dadosComunidade = array($nomeComunidade, $descricao);
-        array_push(self::$registroComunidades, $dadosComunidade);
+        array_push(self::$registroComunidades, $novaComunidade);
     }
 
     public function getRegistroContas(): array
