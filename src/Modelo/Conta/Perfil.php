@@ -7,29 +7,27 @@ require_once 'src/Modelo/Autoloader/autoload.php';
 use Projeto\Iface\Modelo\Comunidade;
 use Projeto\Iface\Modelo\Conta\Conta;
 use Projeto\Iface\Modelo\Menu;
-use Projeto\Iface\Modelo\Service\ListaRegistros;
 
 class Perfil extends Conta
 {
     private $email;
     private $senha;
     private $nomeUsuario;
-    public $endereco = array();
+    public $listaEndereco = array();
     public $telefone;
-    private $registrosComunidade;
+    private $registrosComunidades = array();
 
     public function __construct(string $email, string $senha, string $nomeUsuario)
     {
         $this->email = $email;
         $this->senha = $senha;
         $this->nomeUsuario = $nomeUsuario;
-        $this->registrosComunidade = new ListaRegistros();
     }
 
     //-------------------Funções de criação/alteração de atributos do perfil-----------------------
     public function opcoesPerfil(): void
     {
-        echo "[ 1 ] Alterar nome\n[ 2 ] Adicionar endereço\n[ 3 ] Atualizar endereço\n[ 4 ] Criar Comunidade\n[ 5 ] Verificar dados do perfil\n[ 6 ] Verificar dados da comunidade\n[ 7 ] Fazer LogOff\n[ 0 ] Sair\nEscolha uma opção: ";
+        echo "[ 1 ] Alterar nome\n[ 2 ] Adicionar endereço\n[ 3 ] Gerenciar endereço\n[ 4 ] Criar Comunidade\n[ 5 ] Verificar dados do perfil\n[ 6 ] Verificar dados da comunidade\n[ 7 ] Fazer LogOff\n[ 0 ] Sair\nEscolha uma opção: ";
         $escolhaPerfil = rtrim(fgets(STDIN)); // Captura o input do terminal.
 
         $this->tratarEscolhaPefil($escolhaPerfil);
@@ -37,8 +35,9 @@ class Perfil extends Conta
 
     public function tratarEscolhaPefil($escolhaPerfil)
     {
-        if ($escolhaPerfil === "1") {
-            echo "Novo nome de usuário: ";
+        if ($escolhaPerfil === "1") 
+        {
+            echo PHP_EOL . "Novo nome de usuário: ";
             $novoNome = rtrim(fgets(STDIN));
 
             if ($this->nomeUsuario === $novoNome) {
@@ -50,19 +49,41 @@ class Perfil extends Conta
             $this->opcoesPerfil();
         }
 
-        else if ($escolhaPerfil === "2") {
-            echo "Cidade: ";
+        else if ($escolhaPerfil === "2") 
+        {
+            echo PHP_EOL . "Cidade: ";
             $nomeCidade = rtrim(fgets(STDIN));
             echo "Bairro: ";
             $nomeBairro = rtrim(fgets(STDIN));
             echo "Rua: ";
             $nomeRua = rtrim(fgets(STDIN));
-            echo "Número: ";
-            $numeroCasa = rtrim(fgets(STDIN));
-
-            array_push($this->endereco, $nomeCidade, $nomeBairro, $nomeRua, $numeroCasa);
+            array_push($this->listaEndereco, $nomeCidade, $nomeBairro, $nomeRua);
             echo PHP_EOL . "Endereço cadastrado!" . PHP_EOL . PHP_EOL;
             $this->opcoesPerfil();
+        }
+
+        else if ($escolhaPerfil === "3")
+        {
+            if(empty($this->listaEndereco))
+            {
+                echo PHP_EOL . "Nenhum endereço cadastrado." . PHP_EOL . PHP_EOL;
+                $this->opcoesPerfil();
+            }
+            echo PHP_EOL . "[ 1 ] Visualizar endereço cadastrado\n[ 2 ] Alterar endereço\n[ 3 ] Excluir endereço\n[ 0 ] Cancelar\nEscolha uma opção: ";
+            $escolhaGerenciarEndereco = rtrim(fgets(STDIN));
+            if($escolhaGerenciarEndereco === "1")
+            {
+                $nomeCidade = $this->listaEndereco[0];
+                $nomeBairro = $this->listaEndereco[1];
+                $nomeRua = $this->listaEndereco[2];
+                echo PHP_EOL . "Cidade: $nomeCidade\nBairro: $nomeBairro\nRua: $nomeRua" . PHP_EOL . PHP_EOL;
+                $this->opcoesPerfil();
+            }
+            else if($escolhaGerenciarEndereco === "0")
+            {
+                echo PHP_EOL . "Ação cancelada!!" . PHP_EOL . PHP_EOL;
+                $this->opcoesPerfil();
+            }
         }
 
         else if ($escolhaPerfil === "4")
@@ -74,7 +95,7 @@ class Perfil extends Conta
 
             $nomeCriador = $this->nomeUsuario;
             $novaComunidade = new Comunidade($nomeCriador, $novoNomeComunidade, $novaDescricao);
-            $this->registrosComunidade->incrementaArrayComunidades($novaComunidade);
+            $this->incrementaArrayComunidades($novaComunidade);
 
             echo PHP_EOL . "Comunidade ($novoNomeComunidade) criada" . PHP_EOL . PHP_EOL;
             $this->opcoesPerfil();
@@ -88,13 +109,12 @@ class Perfil extends Conta
 
         else if ($escolhaPerfil === '6')
         {
-            $listaComunidades = $this->registrosComunidade->getRegistroComunidades();
-            if(empty($listaComunidades))
+            if(empty($this->registrosComunidades))
             {
                 echo PHP_EOL . "Você não possui nenhuma comunidade!" . PHP_EOL . PHP_EOL;
                 $this->opcoesPerfil();
             }
-            foreach($listaComunidades as $comunidades)
+            foreach($this->registrosComunidades as $comunidades)
             {
                 if($comunidades->getNomeCriador() === $this->nomeUsuario)
                 {
@@ -124,6 +144,11 @@ class Perfil extends Conta
             echo PHP_EOL . "Opção inválida, por favor escolhaPerfil uma das opções disponíveis." . PHP_EOL . PHP_EOL;
             $this->opcoesPerfil();
         }
+    }
+
+    public function incrementaArrayComunidades(Comunidade $novaComunidade): void
+    {
+        array_push($this->registrosComunidades, $novaComunidade);
     }
     //---------------------------------------------------------------------------------------------
 }
