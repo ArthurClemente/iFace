@@ -27,7 +27,7 @@ class Menu
     {
         if($escolha === "1")
         {
-            echo "Email: ";
+            echo PHP_EOL . "Email: ";
             $emailLogin = rtrim(fgets(STDIN));
             echo "Senha: ";
             $senhaLogin = rtrim(fgets(STDIN));
@@ -36,7 +36,7 @@ class Menu
         
         else if($escolha === "2")
         {
-            echo "Email: ";
+            echo PHP_EOL . "Email: ";
             $novoEmail = rtrim(fgets(STDIN));
             echo "Senha: ";
             $novaSenha = rtrim(fgets(STDIN));
@@ -48,7 +48,7 @@ class Menu
 
         else if ($escolha === "0")
         {
-            echo "Saindo do sistema...";
+            echo PHP_EOL . "Saindo do sistema..." . PHP_EOL;
             exit();
         }
         
